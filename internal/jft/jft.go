@@ -119,7 +119,7 @@ func Delete() *cobra.Command {
 }
 
 func List() *cobra.Command {
-	var month string
+	var date string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "show plans list",
@@ -135,12 +135,12 @@ func List() *cobra.Command {
 			defer func() {
 				err = db.Close()
 			}()
-			ps, err := model.FindPlans(db, month)
+			ps, err := model.FindPlans(db, date)
 			if err != nil {
 				return err
 			}
 			if len(ps) == 0 {
-				return errors.New(fmt.Sprintf("no plans on %v", month))
+				return errors.New(fmt.Sprintf("no plans on %v", date))
 			}
 			var lineFeed string
 			for _, p := range ps {
@@ -151,6 +151,6 @@ func List() *cobra.Command {
 			return err
 		},
 	}
-	cmd.Flags().StringVarP(&month, "month", "m", "", "choose month")
+	cmd.Flags().StringVarP(&date, "date", "d", "", "choose date")
 	return cmd
 }
