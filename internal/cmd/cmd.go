@@ -11,5 +11,6 @@ func New() *cobra.Command {
 	cmd.AddCommand(jft.Add())
 	cmd.AddCommand(jft.Update())
 	cmd.AddCommand(jft.Delete())
+	cmd.AddCommand(jft.List())
 	return cmd
 }

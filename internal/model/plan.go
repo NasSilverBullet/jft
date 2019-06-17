@@ -114,6 +114,16 @@ func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
 	return p, nil
 }
 
+func FindPlans(db *gorm.DB, monthStr string) ([]Plan, error) {
+	begin, end, err := getMonthEndAndBeginning(monthStr)
+	if err != nil {
+		return nil, err
+	}
+	ps := []Plan{}
+	db.Where("start BETWEEN ? AND ?", begin, end).Find(&ps)
+	return ps, err
+}
+
 func (p Plan) String() string {
 	const layout = "2006-01-02 15:04"
 	const format = "ID : %v\nStart : %v\nEnd : %v\nTitle : %v\nDescription : %v"
@@ -141,4 +151,36 @@ func parseTime(timeString string) (*time.Time, error) {
 	n := time.Now()
 	t := time.Date(n.Year(), n.Month(), n.Day(), hour, min, 0, 0, time.Local)
 	return &t, err
+}
+
+func getMonthEndAndBeginning(monthString string) (*time.Time, *time.Time, error) {
+	const monthformat = `^(19[0-9]{2}|20[0-9]{2})/([1-9]|1[0-2])$`
+	if monthString == "" {
+		n := time.Now()
+		monthString = strconv.Itoa(n.Year()) + "/" + strconv.Itoa(int(n.Month()))
+	}
+	ok, err := regexp.MatchString(monthformat, monthString)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !ok {
+		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", monthString))
+	}
+	yearAndMonth := strings.Split(monthString, "/")
+	year, err := strconv.Atoi(yearAndMonth[0])
+	if err != nil {
+		return nil, nil, err
+	}
+	month, err := strconv.Atoi(yearAndMonth[1])
+	if err != nil {
+		return nil, nil, err
+	}
+	begin := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.Local)
+	endYear, endMonth := year, month+1
+	if endMonth > 12 {
+		endYear++
+		endMonth = 1
+	}
+	end := time.Date(endYear, time.Month(endMonth), 1, 0, 0, 0, 0, time.Local).AddDate(0, 0, -1)
+	return &begin, &end, err
 }

@@ -116,3 +116,34 @@ func Delete() *cobra.Command {
 	}
 	return cmd
 }
+
+func List() *cobra.Command {
+	var month string
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "show plans list",
+		// TODO: 時間があれば、説明を充実する,
+		Long: ``,
+		Args: cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			db, err := db.New()
+			if err != nil {
+				return err
+			}
+			model.MigratePlan(db)
+			defer func() {
+				err = db.Close()
+			}()
+			ps, err := model.FindPlans(db, month)
+			if err != nil {
+				return err
+			}
+			for _, p := range ps {
+				fmt.Println(p)
+			}
+			return err
+		},
+	}
+	cmd.Flags().StringVarP(&month, "month", "m", "", "choose month")
+	return cmd
+}
