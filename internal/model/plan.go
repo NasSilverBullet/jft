@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -60,4 +61,17 @@ func (p Plan) String() string {
 	const layout = "2006-01-02 15:04"
 	const format = "ID : %v\nStart : %v\nEnd : %v\nShort description : %v\nDescription : %v"
 	return fmt.Sprintf(format, p.ID, p.Start.Format(layout), p.End.Format(layout), p.ShortDescription, p.Description)
+}
+
+func GetPlan(db *gorm.DB, idStr string) (*Plan, error) {
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return nil, err
+	}
+	p := &Plan{}
+	db.First(p, id)
+	if p.ID != uint(id) {
+		err = errors.New(fmt.Sprintf("plan ID [%d] is not found", id))
+	}
+	return p, err
 }

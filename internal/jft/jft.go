@@ -65,7 +65,12 @@ func Update() *cobra.Command {
 			defer func() {
 				err = db.Close()
 			}()
+			p, err := model.GetPlan(db, args[0])
+			if err != nil {
+				return err
+			}
 			fmt.Println("updated the plan!!")
+			fmt.Println(p)
 			return err
 		},
 	}
