@@ -3,6 +3,7 @@ package model
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -43,6 +44,13 @@ func NewPlan(db *gorm.DB, startStr string, endStr string, sd string, d string) (
 }
 
 func parseTime(timeString string) (*time.Time, error) {
+	ok, err := regexp.MatchString(`^([0-1][0-9]|2[0-3]):([0-5][0-9])$`, timeString)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, errors.New(fmt.Sprintf("[%s] is not matched to time format", timeString))
+	}
 	hourAndMinStr := strings.Split(timeString, ":")
 	hour, err := strconv.Atoi(hourAndMinStr[0])
 	if err != nil {
