@@ -166,16 +166,16 @@ func getMonthEndAndBeginning(dateString string) (*time.Time, *time.Time, error) 
 	if !ok {
 		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", dateString))
 	}
-	yearAndMonthAndDay := strings.Split(dateString, "/")
-	year, err := strconv.Atoi(yearAndMonthAndDay[0])
+	yearAndMonthAndDate := strings.Split(dateString, "/")
+	year, err := strconv.Atoi(yearAndMonthAndDate[0])
 	if err != nil {
 		return nil, nil, err
 	}
-	month, err := strconv.Atoi(yearAndMonthAndDay[1])
+	month, err := strconv.Atoi(yearAndMonthAndDate[1])
 	if err != nil {
 		return nil, nil, err
 	}
-	date, err := strconv.Atoi(yearAndMonthAndDay[2])
+	date, err := strconv.Atoi(yearAndMonthAndDate[2])
 	if err != nil {
 		return nil, nil, err
 	}
