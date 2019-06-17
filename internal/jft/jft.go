@@ -52,9 +52,9 @@ func Update() *cobra.Command {
 	var start, end, title, description string
 	cmd := &cobra.Command{
 		Use:   "update",
-		Short: "update today's each plan",
+		Short: "update today's each plan, please give me id",
 		// TODO: 時間があれば、説明を充実する,
-		Long: ``,
+		Long: `hoge`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			db, err := db.New()
