@@ -10,7 +10,7 @@ func New() (*gorm.DB, error) {
 	if err != nil {
 		return db, err
 	}
-	db.LogMode(true)
+	//db.LogMode(true)
 	db.Set("gorm:table_options", "ENGINE=InnoDB")
 	return db, err
 }

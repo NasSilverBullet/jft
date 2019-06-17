@@ -8,5 +8,6 @@ import (
 func New() *cobra.Command {
 	cobra.OnInitialize()
 	cmd := jft.Exec()
+	cmd.AddCommand(jft.Add())
 	return cmd
 }
