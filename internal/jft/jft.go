@@ -80,7 +80,7 @@ func Update() *cobra.Command {
 	}
 	cmd.Flags().StringVarP(&start, "start", "s", "", "start time")
 	cmd.Flags().StringVarP(&end, "end", "e", "", "end time")
-	cmd.Flags().StringVarP(&title, "shortdesc", "t", "", "short description")
+	cmd.Flags().StringVarP(&title, "title", "t", "", "short description")
 	cmd.Flags().StringVarP(&description, "desc", "d", "", "detailed description")
 	return cmd
 }
