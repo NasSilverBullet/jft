@@ -138,8 +138,11 @@ func List() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			var lineFeed string
 			for _, p := range ps {
+				fmt.Print(lineFeed)
 				fmt.Println(p)
+				lineFeed = "\n"
 			}
 			return err
 		},
