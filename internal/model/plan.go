@@ -114,8 +114,8 @@ func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
 	return p, nil
 }
 
-func FindPlans(db *gorm.DB, monthStr string) ([]Plan, error) {
-	begin, end, err := getMonthEndAndBeginning(monthStr)
+func FindPlans(db *gorm.DB, dateStr string) ([]Plan, error) {
+	begin, end, err := getMonthEndAndBeginning(dateStr)
 	if err != nil {
 		return nil, err
 	}
@@ -153,34 +153,33 @@ func parseTime(timeString string) (*time.Time, error) {
 	return &t, err
 }
 
-func getMonthEndAndBeginning(monthString string) (*time.Time, *time.Time, error) {
-	const monthformat = `^(19[0-9]{2}|20[0-9]{2})/(0?[1-9]|1[0-2])$`
-	if monthString == "" {
+func getMonthEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
+	const dateformat = `^(19[0-9]{2}|20[0-9]{2})/(0?[1-9]|1[0-2])/(0?[1-9]|[1-2][0-9]|3[0-1])$`
+	if dateString == "" {
 		n := time.Now()
-		monthString = strconv.Itoa(n.Year()) + "/" + strconv.Itoa(int(n.Month()))
+		dateString = strconv.Itoa(n.Year()) + "/" + strconv.Itoa(int(n.Month())) + "/" + strconv.Itoa(n.Day())
 	}
-	ok, err := regexp.MatchString(monthformat, monthString)
+	ok, err := regexp.MatchString(dateformat, dateString)
 	if err != nil {
 		return nil, nil, err
 	}
 	if !ok {
-		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", monthString))
+		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", dateString))
 	}
-	yearAndMonth := strings.Split(monthString, "/")
-	year, err := strconv.Atoi(yearAndMonth[0])
+	yearAndMonthAndDay := strings.Split(dateString, "/")
+	year, err := strconv.Atoi(yearAndMonthAndDay[0])
 	if err != nil {
 		return nil, nil, err
 	}
-	month, err := strconv.Atoi(yearAndMonth[1])
+	month, err := strconv.Atoi(yearAndMonthAndDay[1])
 	if err != nil {
 		return nil, nil, err
 	}
-	begin := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.Local)
-	endYear, endMonth := year, month+1
-	if endMonth > 12 {
-		endYear++
-		endMonth = 1
+	date, err := strconv.Atoi(yearAndMonthAndDay[2])
+	if err != nil {
+		return nil, nil, err
 	}
-	end := time.Date(endYear, time.Month(endMonth), 1, 0, 0, 0, 0, time.Local).AddDate(0, 0, -1)
+	begin := time.Date(year, time.Month(month), date, 0, 0, 0, 0, time.Local)
+	end := time.Date(year, time.Month(month), date, 23, 59, 59, 59, time.Local)
 	return &begin, &end, err
 }
