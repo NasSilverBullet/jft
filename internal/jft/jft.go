@@ -47,3 +47,28 @@ func Add() *cobra.Command {
 	cmd.Flags().StringVarP(&description, "description", "d", "", "detailed description")
 	return cmd
 }
+
+func Update() *cobra.Command {
+	var description string
+	cmd := &cobra.Command{
+		Use:   "update",
+		Short: "update today's each plan",
+		// TODO: 時間があれば、説明を充実する,
+		Long: ``,
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			db, err := db.New()
+			if err != nil {
+				return err
+			}
+			db.AutoMigrate(&model.Plan{})
+			defer func() {
+				err = db.Close()
+			}()
+			fmt.Println("updated the plan!!")
+			return err
+		},
+	}
+	cmd.Flags().StringVarP(&description, "description", "d", "", "detailed description")
+	return cmd
+}
