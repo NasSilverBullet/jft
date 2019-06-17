@@ -61,6 +61,13 @@ func GetPlan(db *gorm.DB, idStr string) (*Plan, error) {
 }
 
 func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string, description string) (*Plan, error) {
+	if startStr == "" &&
+		endStr == "" &&
+		title == "" &&
+		description == "" {
+		return nil, errors.New("no update target")
+	}
+
 	var (
 		start, end *time.Time
 		err        error
@@ -93,6 +100,7 @@ func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string,
 	if description == "" {
 		description = p.Description
 	}
+
 	db.Model(p).Updates(Plan{
 		Start:       start,
 		End:         end,
