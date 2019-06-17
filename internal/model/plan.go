@@ -54,5 +54,6 @@ func parseTime(timeString string) (*time.Time, error) {
 
 func (p Plan) String() string {
 	const layout = "2006-01-02 15:04"
-	return fmt.Sprintf("Start : %v\nEnd : %v\nShort description : %v\nDescription : %v", p.Start.Format(layout), p.End.Format(layout), p.ShortDescription, p.Description)
+	const format = "ID : %v\nStart : %v\nEnd : %v\nShort description : %v\nDescription : %v"
+	return fmt.Sprintf(format, p.ID, p.Start.Format(layout), p.End.Format(layout), p.ShortDescription, p.Description)
 }
