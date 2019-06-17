@@ -1,7 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"log"
+
+	"github.com/NasSilverBullet/jft/internal/cmd"
+)
 
 func main() {
-	fmt.Println("hello world")
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
+	c := cmd.New()
+	err := c.Execute()
+	return err
 }
