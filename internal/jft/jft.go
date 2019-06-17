@@ -39,6 +39,7 @@ func Add() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			fmt.Println("Create a new plan!!")
 			fmt.Println(p)
 			return err
 		},

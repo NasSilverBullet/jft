@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -49,4 +50,9 @@ func parseTime(timeString string) (*time.Time, error) {
 	n := time.Now()
 	t := time.Date(n.Year(), n.Month(), n.Day(), hour, min, 0, 0, time.Local)
 	return &t, err
+}
+
+func (p Plan) String() string {
+	const layout = "2006-01-02 15:04"
+	return fmt.Sprintf("Start : %v\nEnd : %v\nShort description : %v\nDescription : %v", p.Start.Format(layout), p.End.Format(layout), p.ShortDescription, p.Description)
 }
