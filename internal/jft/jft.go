@@ -49,7 +49,7 @@ func Add() *cobra.Command {
 }
 
 func Update() *cobra.Command {
-	var description string
+	var start, end, title, description string
 	cmd := &cobra.Command{
 		Use:   "update",
 		Short: "update today's each plan",
@@ -69,11 +69,18 @@ func Update() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			p, err = p.Update(db, start, end, title, description)
+			if err != nil {
+				return err
+			}
 			fmt.Println("updated the plan!!")
 			fmt.Println(p)
 			return err
 		},
 	}
-	cmd.Flags().StringVarP(&description, "description", "d", "", "detailed description")
+	cmd.Flags().StringVarP(&start, "start", "s", "", "start time")
+	cmd.Flags().StringVarP(&end, "end", "e", "", "end time")
+	cmd.Flags().StringVarP(&title, "shortdesc", "t", "", "short description")
+	cmd.Flags().StringVarP(&description, "desc", "d", "", "detailed description")
 	return cmd
 }
