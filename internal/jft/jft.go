@@ -1,6 +1,8 @@
 package jft
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/spf13/cobra"
+)
 
 func Exec() *cobra.Command {
 	cmd := &cobra.Command{
