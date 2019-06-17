@@ -115,7 +115,7 @@ func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
 }
 
 func FindPlans(db *gorm.DB, dateStr string) ([]Plan, error) {
-	begin, end, err := getMonthEndAndBeginning(dateStr)
+	begin, end, err := getDayEndAndBeginning(dateStr)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func parseTime(timeString string) (*time.Time, error) {
 	return &t, err
 }
 
-func getMonthEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
+func getDayEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
 	const dateformat = `^(19[0-9]{2}|20[0-9]{2})/(0?[1-9]|1[0-2])/(0?[1-9]|[1-2][0-9]|3[0-1])$`
 	if dateString == "" {
 		n := time.Now()
@@ -164,7 +164,7 @@ func getMonthEndAndBeginning(dateString string) (*time.Time, *time.Time, error) 
 		return nil, nil, err
 	}
 	if !ok {
-		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", dateString))
+		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to date format", dateString))
 	}
 	yearAndMonthAndDate := strings.Split(dateString, "/")
 	year, err := strconv.Atoi(yearAndMonthAndDate[0])
