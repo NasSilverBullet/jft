@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/NasSilverBullet/jft/internal/util"
 	"github.com/jinzhu/gorm"
 )
 
@@ -26,11 +27,11 @@ func MigratePlan(db *gorm.DB) {
 }
 
 func NewPlan(db *gorm.DB, startStr string, endStr string, title string, description string) (*Plan, error) {
-	start, err := parseTime(startStr)
+	start, err := util.ToTime(startStr)
 	if err != nil {
 		return nil, err
 	}
-	end, err := parseTime(endStr)
+	end, err := util.ToTime(endStr)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +76,7 @@ func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string,
 	if startStr == "" {
 		start = p.Start
 	} else {
-		start, err = parseTime(startStr)
+		start, err = util.ToTime(startStr)
 		if err != nil {
 			return nil, err
 		}
@@ -84,7 +85,7 @@ func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string,
 	if endStr == "" {
 		end = p.End
 	} else {
-		end, err = parseTime(endStr)
+		end, err = util.ToTime(endStr)
 		if err != nil {
 			return nil, err
 		}
@@ -128,29 +129,6 @@ func (p Plan) String() string {
 	const layout = "2006-01-02 15:04"
 	const format = "ID : %v\nStart : %v\nEnd : %v\nTitle : %v\nDescription : %v"
 	return fmt.Sprintf(format, p.ID, p.Start.Format(layout), p.End.Format(layout), p.Title, p.Description)
-}
-
-func parseTime(timeString string) (*time.Time, error) {
-	const timeformat = `^(0?[0-9]|1[0-9]|2[0-3]):(0?[0-9]|[1-5][0-9])$`
-	ok, err := regexp.MatchString(timeformat, timeString)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, errors.New(fmt.Sprintf("[%s] is not matched to time format", timeString))
-	}
-	hourAndMinStr := strings.Split(timeString, ":")
-	hour, err := strconv.Atoi(hourAndMinStr[0])
-	if err != nil {
-		return nil, err
-	}
-	min, err := strconv.Atoi(hourAndMinStr[1])
-	if err != nil {
-		return nil, err
-	}
-	n := time.Now()
-	t := time.Date(n.Year(), n.Month(), n.Day(), hour, min, 0, 0, time.Local)
-	return &t, err
 }
 
 func getDayEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
