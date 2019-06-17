@@ -1,14 +1,14 @@
 package main
 
 import (
-	"log"
+	"os"
 
 	"github.com/NasSilverBullet/jft/internal/cmd"
 )
 
 func main() {
 	if err := run(); err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 }
 
