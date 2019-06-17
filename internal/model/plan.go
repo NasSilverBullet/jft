@@ -154,7 +154,7 @@ func parseTime(timeString string) (*time.Time, error) {
 }
 
 func getMonthEndAndBeginning(monthString string) (*time.Time, *time.Time, error) {
-	const monthformat = `^(19[0-9]{2}|20[0-9]{2})/([1-9]|1[0-2])$`
+	const monthformat = `^(19[0-9]{2}|20[0-9]{2})/(0?[1-9]|1[0-2])$`
 	if monthString == "" {
 		n := time.Now()
 		monthString = strconv.Itoa(n.Year()) + "/" + strconv.Itoa(int(n.Month()))

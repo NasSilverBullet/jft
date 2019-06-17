@@ -1,6 +1,7 @@
 package jft
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/NasSilverBullet/jft/internal/db"
@@ -137,6 +138,9 @@ func List() *cobra.Command {
 			ps, err := model.FindPlans(db, month)
 			if err != nil {
 				return err
+			}
+			if len(ps) == 0 {
+				return errors.New(fmt.Sprintf("no plans on %v", month))
 			}
 			var lineFeed string
 			for _, p := range ps {
