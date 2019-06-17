@@ -109,7 +109,8 @@ func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string,
 	return p, err
 }
 
-func (p *Plan) Delete() (*Plan, error) {
+func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
+	db.Delete(p)
 	return p, nil
 }
 

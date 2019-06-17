@@ -105,7 +105,7 @@ func Delete() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			p, err = p.Delete()
+			p, err = p.Delete(db)
 			if err != nil {
 				return err
 			}
