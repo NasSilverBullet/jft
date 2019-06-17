@@ -84,3 +84,35 @@ func Update() *cobra.Command {
 	cmd.Flags().StringVarP(&description, "desc", "d", "", "detailed description")
 	return cmd
 }
+
+func Delete() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "delete",
+		Short: "delete today's each plan, please give me id",
+		// TODO: 時間があれば、説明を充実する,
+		Long: ``,
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			db, err := db.New()
+			if err != nil {
+				return err
+			}
+			model.MigratePlan(db)
+			defer func() {
+				err = db.Close()
+			}()
+			p, err := model.GetPlan(db, args[0])
+			if err != nil {
+				return err
+			}
+			p, err = p.Delete(db)
+			if err != nil {
+				return err
+			}
+			fmt.Println("deleted the plan!!")
+			fmt.Println(p)
+			return err
+		},
+	}
+	return cmd
+}
