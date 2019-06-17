@@ -154,3 +154,37 @@ func List() *cobra.Command {
 	cmd.Flags().StringVarP(&date, "date", "d", "", "choose date")
 	return cmd
 }
+
+func Month() *cobra.Command {
+	var month string
+	cmd := &cobra.Command{
+		Use:   "month",
+		Short: "show monthly calendar",
+		// TODO: 時間があれば、説明を充実する,
+		Long: ``,
+		Args: cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			db, err := db.New()
+			if err != nil {
+				return err
+			}
+			model.MigratePlan(db)
+			defer func() {
+				err = db.Close()
+			}()
+			days, err := model.FindDays(db, month)
+			if err != nil {
+				return err
+			}
+			if len(days) == 0 {
+				return errors.New(fmt.Sprintf("There are no %v", month))
+			}
+			for _, day := range days {
+				fmt.Println(day)
+			}
+			return err
+		},
+	}
+	cmd.Flags().StringVarP(&month, "month", "m", "", "choose month")
+	return cmd
+}
