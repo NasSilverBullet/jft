@@ -17,6 +17,10 @@ type Plan struct {
 	Description      string `gorm:"size:1024"`
 }
 
+func MigratePlan(db *gorm.DB) {
+	db.AutoMigrate(Plan{})
+}
+
 func NewPlan(db *gorm.DB, startStr string, endStr string, sd string, d string) (*Plan, error) {
 	start, err := parseTime(startStr)
 	if err != nil {

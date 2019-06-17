@@ -31,7 +31,7 @@ func Add() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			db.AutoMigrate(&model.Plan{})
+			model.MigratePlan(db)
 			defer func() {
 				err = db.Close()
 			}()
@@ -61,7 +61,7 @@ func Update() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			db.AutoMigrate(&model.Plan{})
+			model.MigratePlan(db)
 			defer func() {
 				err = db.Close()
 			}()
