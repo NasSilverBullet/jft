@@ -109,6 +109,10 @@ func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string,
 	return p, err
 }
 
+func (p *Plan) Delete() (*Plan, error) {
+	return p, nil
+}
+
 func (p Plan) String() string {
 	const layout = "2006-01-02 15:04"
 	const format = "ID : %v\nStart : %v\nEnd : %v\nTitle : %v\nDescription : %v"
