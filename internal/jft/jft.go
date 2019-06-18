@@ -188,3 +188,32 @@ func Month() *cobra.Command {
 	cmd.Flags().StringVarP(&month, "month", "m", "", "choose month")
 	return cmd
 }
+
+func Year() *cobra.Command {
+	var year string
+	cmd := &cobra.Command{
+		Use:   "year",
+		Short: "show yearly calendar",
+		// TODO: 時間があれば、説明を充実する,
+		Long: ``,
+		Args: cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			db, err := db.New()
+			if err != nil {
+				return err
+			}
+			model.MigratePlan(db)
+			defer func() {
+				err = db.Close()
+			}()
+			ms, err := model.FindMonths(db, year)
+			for _, m := range ms {
+				fmt.Println(m)
+			}
+
+			return err
+		},
+	}
+	cmd.Flags().StringVarP(&year, "year", "y", "", "choose year")
+	return cmd
+}

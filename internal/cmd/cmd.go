@@ -13,5 +13,6 @@ func New() *cobra.Command {
 	cmd.AddCommand(jft.Delete())
 	cmd.AddCommand(jft.List())
 	cmd.AddCommand(jft.Month())
+	cmd.AddCommand(jft.Year())
 	return cmd
 }

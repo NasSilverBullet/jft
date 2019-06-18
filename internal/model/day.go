@@ -10,7 +10,7 @@ import (
 )
 
 type Day struct {
-	Date  *time.Time
+	Date  time.Time
 	Plans []Plan
 }
 
@@ -38,7 +38,7 @@ func FindDays(db *gorm.DB, monthStr string) ([]Day, error) {
 			}
 		}
 		days = append(days, Day{
-			Date:  b,
+			Date:  *b,
 			Plans: ps,
 		})
 		*eachDay = eachDay.AddDate(0, 0, 1)

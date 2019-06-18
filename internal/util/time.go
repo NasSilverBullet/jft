@@ -63,20 +63,20 @@ func GetDayEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
 	return &begin, &end, err
 }
 
-func GetMonthEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
+func GetMonthEndAndBeginning(monthString string) (*time.Time, *time.Time, error) {
 	const dateformat = `^(19[0-9]{2}|20[0-9]{2})/(0?[1-9]|1[0-2])$`
-	if dateString == "" {
+	if monthString == "" {
 		n := time.Now()
-		dateString = strconv.Itoa(n.Year()) + "/" + strconv.Itoa(int(n.Month()))
+		monthString = strconv.Itoa(n.Year()) + "/" + strconv.Itoa(int(n.Month()))
 	}
-	ok, err := regexp.MatchString(dateformat, dateString)
+	ok, err := regexp.MatchString(dateformat, monthString)
 	if err != nil {
 		return nil, nil, err
 	}
 	if !ok {
-		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", dateString))
+		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", monthString))
 	}
-	yearAndMonth := strings.Split(dateString, "/")
+	yearAndMonth := strings.Split(monthString, "/")
 	year, err := strconv.Atoi(yearAndMonth[0])
 	if err != nil {
 		return nil, nil, err
@@ -92,5 +92,27 @@ func GetMonthEndAndBeginning(dateString string) (*time.Time, *time.Time, error) 
 	}
 	begin := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.Local)
 	end := time.Date(nextYear, time.Month(nextMonth), 1, 0, 0, 0, 0, time.Local).AddDate(0, 0, -1)
+	return &begin, &end, err
+}
+
+func GetYearEndAndBeginning(yearString string) (*time.Time, *time.Time, error) {
+	const dateformat = `^(19[0-9]{2}|20[0-9]{2})$`
+	if yearString == "" {
+		n := time.Now()
+		yearString = strconv.Itoa(n.Year())
+	}
+	ok, err := regexp.MatchString(dateformat, yearString)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !ok {
+		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to year format", yearString))
+	}
+	year, err := strconv.Atoi(yearString)
+	if err != nil {
+		return nil, nil, err
+	}
+	begin := time.Date(year, 1, 1, 0, 0, 0, 0, time.Local)
+	end := time.Date(year+1, 1, 1, 0, 0, 0, 0, time.Local).AddDate(0, 0, -1)
 	return &begin, &end, err
 }
