@@ -1,6 +1,8 @@
 package model
 
 import (
+	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/NasSilverBullet/jft/internal/util"
@@ -24,7 +26,7 @@ func FindDays(db *gorm.DB, monthStr string) ([]Day, error) {
 	eachDay := begin
 	month := begin.Month()
 	for month == eachDay.Month() {
-		b, e, err := util.GetDayEndAndBeginning(begin.String())
+		b, e, err := util.GetDayEndAndBeginning(strconv.Itoa(eachDay.Year()) + "/" + strconv.Itoa(int(eachDay.Month())) + "/" + strconv.Itoa(eachDay.Day()))
 
 		if err != nil {
 			return nil, err
@@ -39,7 +41,18 @@ func FindDays(db *gorm.DB, monthStr string) ([]Day, error) {
 			Date:  b,
 			Plans: ps,
 		})
+		*eachDay = eachDay.AddDate(0, 0, 1)
 	}
 
 	return days, err
+}
+
+func (p Day) String() string {
+	const layout = "2006-01-02"
+	const format = "%v  >>>  %s"
+	state := "O"
+	if len(p.Plans) == 0 {
+		state = "X"
+	}
+	return fmt.Sprintf(format, p.Date.Format(layout), state)
 }
