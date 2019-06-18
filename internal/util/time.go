@@ -94,3 +94,25 @@ func GetMonthEndAndBeginning(monthString string) (*time.Time, *time.Time, error)
 	end := time.Date(nextYear, time.Month(nextMonth), 1, 0, 0, 0, 0, time.Local).AddDate(0, 0, -1)
 	return &begin, &end, err
 }
+
+func GetYearEndAndBeginning(yearString string) (*time.Time, *time.Time, error) {
+	const dateformat = `^(19[0-9]{2}|20[0-9]{2})$`
+	if yearString == "" {
+		n := time.Now()
+		yearString = strconv.Itoa(n.Year())
+	}
+	ok, err := regexp.MatchString(dateformat, yearString)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !ok {
+		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to year format", yearString))
+	}
+	year, err := strconv.Atoi(yearString)
+	if err != nil {
+		return nil, nil, err
+	}
+	begin := time.Date(year, 1, 1, 0, 0, 0, 0, time.Local)
+	end := time.Date(year+1, 1, 1, 0, 0, 0, 0, time.Local).AddDate(0, 0, -1)
+	return &begin, &end, err
+}

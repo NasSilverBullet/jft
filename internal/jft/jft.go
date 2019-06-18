@@ -206,7 +206,11 @@ func Year() *cobra.Command {
 			defer func() {
 				err = db.Close()
 			}()
-			fmt.Println("year cmd")
+			ms, err := model.FindMonths(db, year)
+			for _, m := range ms {
+				fmt.Println(m)
+			}
+
 			return err
 		},
 	}
