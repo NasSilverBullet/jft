@@ -63,20 +63,20 @@ func GetDayEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
 	return &begin, &end, err
 }
 
-func GetMonthEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
+func GetMonthEndAndBeginning(monthString string) (*time.Time, *time.Time, error) {
 	const dateformat = `^(19[0-9]{2}|20[0-9]{2})/(0?[1-9]|1[0-2])$`
-	if dateString == "" {
+	if monthString == "" {
 		n := time.Now()
-		dateString = strconv.Itoa(n.Year()) + "/" + strconv.Itoa(int(n.Month()))
+		monthString = strconv.Itoa(n.Year()) + "/" + strconv.Itoa(int(n.Month()))
 	}
-	ok, err := regexp.MatchString(dateformat, dateString)
+	ok, err := regexp.MatchString(dateformat, monthString)
 	if err != nil {
 		return nil, nil, err
 	}
 	if !ok {
-		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", dateString))
+		return nil, nil, errors.New(fmt.Sprintf("[%s] is not matched to month format", monthString))
 	}
-	yearAndMonth := strings.Split(dateString, "/")
+	yearAndMonth := strings.Split(monthString, "/")
 	year, err := strconv.Atoi(yearAndMonth[0])
 	if err != nil {
 		return nil, nil, err
