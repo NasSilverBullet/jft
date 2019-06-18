@@ -48,11 +48,20 @@ func FindDays(db *gorm.DB, monthStr string) ([]Day, error) {
 }
 
 func (p Day) String() string {
-	const layout = "2006-01-02"
+	const layout = "2006/01/02 (Mon)"
 	const format = "%v  >>>  %s"
 	state := "O"
 	if len(p.Plans) == 0 {
 		state = "X"
+	}
+	today := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 23, 59, 59, 59, time.Local)
+	switch {
+	case p.Date.After(today):
+		state = "-"
+	case len(p.Plans) == 0:
+		state = "X"
+	default:
+		state = "O"
 	}
 	return fmt.Sprintf(format, p.Date.Format(layout), state)
 }
