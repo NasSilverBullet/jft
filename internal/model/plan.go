@@ -109,11 +109,11 @@ func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string,
 }
 
 func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
-	pIsToday, err := p.isToday()
+	ok, err := p.isToday()
 	if err != nil {
 		return nil, err
 	}
-	if !pIsToday {
+	if !ok {
 		return nil, errors.New("This schedule is not today's")
 	}
 	db.Delete(p)
