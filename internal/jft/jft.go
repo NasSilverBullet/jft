@@ -154,7 +154,7 @@ func List() *cobra.Command {
 			return err
 		},
 	}
-	cmd.Flags().StringVarP(&date, "date", "d", "", "choose date")
+	cmd.Flags().StringVarP(&date, "when", "w", "", "choose date")
 	return cmd
 }
 
@@ -188,7 +188,7 @@ func Month() *cobra.Command {
 			return err
 		},
 	}
-	cmd.Flags().StringVarP(&month, "month", "m", "", "choose month")
+	cmd.Flags().StringVarP(&month, "when", "w", "", "choose month")
 	return cmd
 }
 
@@ -217,6 +217,6 @@ func Year() *cobra.Command {
 			return err
 		},
 	}
-	cmd.Flags().StringVarP(&year, "year", "y", "", "choose year")
+	cmd.Flags().StringVarP(&year, "when", "w", "", "choose year")
 	return cmd
 }
