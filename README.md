@@ -12,10 +12,8 @@ $ go get -u github.com/NasSilverBullet/jft/cmd/jft
 ```
 
 ## Setting
-```shell
-$ mysql.server start
-$ mysql -u root mysql -e 'create database jft;'
-```
+- This requires the mysql root user password to be empty, I'm sorry
+- Please change the root user's password or wait for it to be updated...
 
 ## Usage
 ```shell
