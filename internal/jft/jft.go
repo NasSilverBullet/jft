@@ -14,7 +14,8 @@ func Exec() *cobra.Command {
 		// TODO: 時間があれば、説明を充実する
 		Use:   "jft",
 		Short: "calendar cli tool, just for today",
-		Long:  ``,
+		Long: `This tool is a calendar that helps you plan and keep running every day.
+If you plan daily, it will surely be for you.`,
 	}
 	return cmd
 }
@@ -24,8 +25,9 @@ func Add() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add",
 		Short: "Add today's new plans",
-		// TODO: 時間があれば、説明を充実する,
-		Long: ``,
+		Long: `You can do this for example with the following command:
+  $ jft add 10:00 12:00 'check emails'
+  $ jft add 13:00 14:30 'meeting' -d 'on conference room 10' ## You can add detailed description`,
 		Args: cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			db, err := db.New()
@@ -54,8 +56,9 @@ func Update() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update",
 		Short: "update today's each plan, please give me id",
-		// TODO: 時間があれば、説明を充実する,
-		Long: `hoge`,
+		Long: `You can do this for example with the following command:
+  $ jft list ## You can check your today's plans
+  $ jft list -w 2019/06/01 ## You can check your each day's plans`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			db, err := db.New()
@@ -90,8 +93,8 @@ func Delete() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "delete",
 		Short: "delete today's each plan, please give me id",
-		// TODO: 時間があれば、説明を充実する,
-		Long: ``,
+		Long: `You can do this for example with the following command:
+  $ jft delete 1`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			db, err := db.New()
@@ -123,8 +126,9 @@ func List() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "show plans list",
-		// TODO: 時間があれば、説明を充実する,
-		Long: ``,
+		Long: `You can do this for example with the following command:
+  $ jft list ## You can check your today's plans
+  $ jft list -w 2019/06/01 ## You can check your each day's plans`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			db, err := db.New()
@@ -163,8 +167,9 @@ func Month() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "month",
 		Short: "show monthly calendar",
-		// TODO: 時間があれば、説明を充実する,
-		Long: ``,
+		Long: `You can do this for example with the following command:
+  $ jft month ## You can check your efforts on this month
+  $ jft month -w 2019/05 ## You can check your efforts on each month`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			db, err := db.New()
@@ -197,8 +202,9 @@ func Year() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "year",
 		Short: "show yearly calendar",
-		// TODO: 時間があれば、説明を充実する,
-		Long: ``,
+		Long: `You can do this for example with the following command:
+  $ jft year ## You can check your efforts on this year
+  $ jft year -w 2018 ## You can check your efforts on each year`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			db, err := db.New()
