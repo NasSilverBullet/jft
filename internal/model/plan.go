@@ -109,11 +109,11 @@ func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string,
 }
 
 func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
-	pIsToday, err := p.isToday()
+	ok, err := p.isToday()
 	if err != nil {
 		return nil, err
 	}
-	if !pIsToday {
+	if !ok {
 		return nil, errors.New("This schedule is not today's")
 	}
 	db.Delete(p)
@@ -121,7 +121,7 @@ func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
 }
 
 func FindPlans(db *gorm.DB, dateStr string) ([]Plan, error) {
-	begin, end, err := util.GetDayEndAndBeginning(dateStr)
+	begin, end, err := util.GetDayBeginAndEnd(dateStr)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func FindPlans(db *gorm.DB, dateStr string) ([]Plan, error) {
 }
 
 func (p *Plan) isToday() (bool, error) {
-	b, e, err := util.GetDayEndAndBeginning(time.Now().Format("2006/01/02"))
+	b, e, err := util.GetDayBeginAndEnd(time.Now().Format("2006/01/02"))
 	if err != nil {
 		return false, err
 	}
@@ -142,7 +142,7 @@ func (p *Plan) isToday() (bool, error) {
 }
 
 func (p Plan) String() string {
-	const layout = "2006-01-02 15:04"
+	const layout = "2006/01/02 15:04"
 	const format = "ID : %v\nStart : %v\nEnd : %v\nTitle : %v\nDescription : %v"
 	return fmt.Sprintf(format, p.ID, p.Start.Format(layout), p.End.Format(layout), p.Title, p.Description)
 }
