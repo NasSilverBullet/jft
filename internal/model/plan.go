@@ -109,6 +109,13 @@ func (p *Plan) Update(db *gorm.DB, startStr string, endStr string, title string,
 }
 
 func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
+	pIsToday, err := p.isToday()
+	if err != nil {
+		return nil, err
+	}
+	if !pIsToday {
+		return nil, errors.New("This schedule is not today's")
+	}
 	db.Delete(p)
 	return p, nil
 }
@@ -121,6 +128,17 @@ func FindPlans(db *gorm.DB, dateStr string) ([]Plan, error) {
 	ps := []Plan{}
 	db.Where("start BETWEEN ? AND ?", begin, end).Find(&ps)
 	return ps, err
+}
+
+func (p *Plan) isToday() (bool, error) {
+	b, e, err := util.GetDayEndAndBeginning(time.Now().Format("2006/01/02"))
+	if err != nil {
+		return false, err
+	}
+	if p.Start.Before(b.Local()) || p.Start.After(e.Local()) {
+		return false, err
+	}
+	return true, err
 }
 
 func (p Plan) String() string {
