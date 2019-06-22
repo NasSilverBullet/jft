@@ -139,6 +139,9 @@ func List() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			if date == "" {
+				date = "today"
+			}
 			if len(ps) == 0 {
 				return errors.New(fmt.Sprintf("no plans on %v", date))
 			}
