@@ -131,7 +131,7 @@ func FindPlans(db *gorm.DB, dateStr string) ([]Plan, error) {
 }
 
 func (p *Plan) isToday() (bool, error) {
-	b, e, err := util.GetDayEndAndBeginning(time.Now().Format("2006/01/02"))
+	b, e, err := util.GetDayBeginAndEnd(time.Now().Format("2006/01/02"))
 	if err != nil {
 		return false, err
 	}
