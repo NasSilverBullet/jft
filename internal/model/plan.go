@@ -124,7 +124,7 @@ func FindPlans(db *gorm.DB, dateStr string) ([]Plan, error) {
 }
 
 func (p Plan) String() string {
-	const layout = "2006-01-02 15:04"
+	const layout = "2006/01/02 15:04"
 	const format = "ID : %v\nStart : %v\nEnd : %v\nTitle : %v\nDescription : %v"
 	return fmt.Sprintf(format, p.ID, p.Start.Format(layout), p.End.Format(layout), p.Title, p.Description)
 }
