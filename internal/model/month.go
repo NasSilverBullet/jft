@@ -15,7 +15,7 @@ type Month struct {
 }
 
 func FindMonths(db *gorm.DB, yearStr string) ([]Month, error) {
-	begin, _, err := util.GetYearEndAndBeginning(yearStr)
+	begin, _, err := util.GetYearBeginAndEnd(yearStr)
 	if err != nil {
 		return nil, err
 	}

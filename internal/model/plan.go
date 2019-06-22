@@ -114,7 +114,7 @@ func (p *Plan) Delete(db *gorm.DB) (*Plan, error) {
 }
 
 func FindPlans(db *gorm.DB, dateStr string) ([]Plan, error) {
-	begin, end, err := util.GetDayEndAndBeginning(dateStr)
+	begin, end, err := util.GetDayBeginAndEnd(dateStr)
 	if err != nil {
 		return nil, err
 	}

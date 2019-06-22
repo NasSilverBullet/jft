@@ -15,7 +15,7 @@ type Day struct {
 }
 
 func FindDays(db *gorm.DB, monthStr string) ([]Day, error) {
-	begin, end, err := util.GetMonthEndAndBeginning(monthStr)
+	begin, end, err := util.GetMonthBeginAndEnd(monthStr)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func FindDays(db *gorm.DB, monthStr string) ([]Day, error) {
 	eachDay := begin
 	month := begin.Month()
 	for month == eachDay.Month() {
-		b, e, err := util.GetDayEndAndBeginning(strconv.Itoa(eachDay.Year()) + "/" + strconv.Itoa(int(eachDay.Month())) + "/" + strconv.Itoa(eachDay.Day()))
+		b, e, err := util.GetDayBeginAndEnd(strconv.Itoa(eachDay.Year()) + "/" + strconv.Itoa(int(eachDay.Month())) + "/" + strconv.Itoa(eachDay.Day()))
 
 		if err != nil {
 			return nil, err

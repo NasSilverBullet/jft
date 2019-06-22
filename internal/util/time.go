@@ -32,7 +32,7 @@ func ToTime(timeString string) (*time.Time, error) {
 	return &t, err
 }
 
-func GetDayEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
+func GetDayBeginAndEnd(dateString string) (*time.Time, *time.Time, error) {
 	const dateformat = `^(19[0-9]{2}|20[0-9]{2})/(0?[1-9]|1[0-2])/(0?[1-9]|[1-2][0-9]|3[0-1])$`
 	if dateString == "" {
 		n := time.Now()
@@ -63,7 +63,7 @@ func GetDayEndAndBeginning(dateString string) (*time.Time, *time.Time, error) {
 	return &begin, &end, err
 }
 
-func GetMonthEndAndBeginning(monthString string) (*time.Time, *time.Time, error) {
+func GetMonthBeginAndEnd(monthString string) (*time.Time, *time.Time, error) {
 	const dateformat = `^(19[0-9]{2}|20[0-9]{2})/(0?[1-9]|1[0-2])$`
 	if monthString == "" {
 		n := time.Now()
@@ -95,7 +95,7 @@ func GetMonthEndAndBeginning(monthString string) (*time.Time, *time.Time, error)
 	return &begin, &end, err
 }
 
-func GetYearEndAndBeginning(yearString string) (*time.Time, *time.Time, error) {
+func GetYearBeginAndEnd(yearString string) (*time.Time, *time.Time, error) {
 	const dateformat = `^(19[0-9]{2}|20[0-9]{2})$`
 	if yearString == "" {
 		n := time.Now()
